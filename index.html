@@ -1,53 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Election Poster</title>
+<title>Make Your Poster</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #f5e6d3;
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #f5e6d3;
+}
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 
-    img {
-      width: 100%;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
+canvas {
+  border-radius: 10px;
+}
 
-    h1 {
-      color: #ff6600;
-      margin-top: 15px;
-    }
+.controls {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
 
-    p {
-      font-size: 18px;
-      color: #333;
-    }
-  </style>
+button {
+  margin-top: 10px;
+  padding: 10px;
+  background: orange;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+</style>
+
 </head>
 
 <body>
 
+<h2>MAKE YOUR POSTER</h2>
+
 <div class="container">
 
-  <h1>જનસમર્થન</h1>
+<canvas id="canvas" width="600" height="800"></canvas>
 
-  <img src="poster.jpg" alt="Election Poster">
+<div class="controls">
+  <p>Upload Photo</p>
+  <input type="file" accept="image/*" onchange="loadImage(event)">
 
-  <p>ભાજપ ઉમેદવાર</p>
-  <p>શ્રી પરસોતમભાઈ બોદર</p>
+  <p>Your Name</p>
+  <input type="text" id="nameInput" placeholder="Enter your name">
+
+  <br>
+  <button onclick="downloadPoster()">Download</button>
+</div>
 
 </div>
+
+<script>
+
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+
+let baseImage = new Image();
+baseImage.src = "poster.jpg";
+
+let userImage = null;
+
+baseImage.onload = function(){
+  drawPoster();
+}
+
+function loadImage(event){
+  userImage = new Image();
+  userImage.src = URL.createObjectURL(event.target.files[0]);
+  userImage.onload = drawPoster;
+}
+
+function drawPoster(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // draw base poster
+  ctx.drawImage(baseImage, 0, 0, 600, 800);
+
+  // draw user image in circle
+  if(userImage){
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(200, 350, 70, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(userImage, 130, 280, 140, 140);
+    ctx.restore();
+  }
+
+  // draw name
+  let name = document.getElementById("nameInput").value;
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText(name, 150, 470);
+}
+
+document.getElementById("nameInput").addEventListener("input", drawPoster);
+
+function downloadPoster(){
+  let link = document.createElement("a");
+  link.download = "poster.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+</script>
 
 </body>
 </html>
