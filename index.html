@@ -86,22 +86,21 @@ function loadImage(event){
 function drawPoster(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // draw base poster
+  // draw poster
   ctx.drawImage(baseImage, 0, 0);
 
-  // draw user image (PERFECT CIRCLE POSITION)
+  // PERFECT circle alignment
   if(userImage){
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(300, 735, 145, 0, Math.PI * 2);   // moved left + up
-  ctx.closePath();
-  ctx.clip();
-  ctx.drawImage(userImage, 155, 590, 290, 290); // adjusted fit
-  ctx.restore();
-}
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(300, 735, 145, 0, Math.PI * 2); // center
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(userImage, 155, 590, 290, 290); // fit
+    ctx.restore();
   }
 
-  // draw name inside orange box
+  // PERFECT name position
   let name = document.getElementById("nameInput").value;
 
   ctx.font = "bold 42px Arial";
