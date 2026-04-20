@@ -18,14 +18,19 @@ body {
 }
 
 canvas {
-  border-radius: 10px;
   max-width: 100%;
+  border-radius: 10px;
 }
 
 .controls {
   background: white;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
+  width: 250px;
+}
+
+input[type="range"] {
+  width: 100%;
 }
 
 button {
@@ -37,6 +42,7 @@ button {
   cursor: pointer;
 }
 </style>
+
 </head>
 
 <body>
@@ -48,14 +54,26 @@ button {
 <canvas id="canvas"></canvas>
 
 <div class="controls">
-  <p>Upload Photo</p>
+
+  <p><b>Upload Photo</b></p>
   <input type="file" accept="image/*" onchange="loadImage(event)">
 
-  <p>Your Name</p>
+  <p><b>Your Name</b></p>
   <input type="text" id="nameInput" placeholder="તમારું નામ લખો">
 
-  <br>
+  <hr>
+
+  <p>X (Left / Right)</p>
+  <input type="range" id="x" min="0" max="1080" value="300">
+
+  <p>Y (Up / Down)</p>
+  <input type="range" id="y" min="0" max="1350" value="700">
+
+  <p>Size</p>
+  <input type="range" id="size" min="50" max="300" value="150">
+
   <button onclick="downloadPoster()">Download</button>
+
 </div>
 
 </div>
@@ -76,44 +94,42 @@ baseImage.onload = function(){
   drawPoster();
 }
 
-function loadImage(event){
+function loadImage(e){
   userImage = new Image();
-  userImage.src = URL.createObjectURL(event.target.files[0]);
+  userImage.src = URL.createObjectURL(e.target.files[0]);
   userImage.onload = drawPoster;
 }
 
 function drawPoster(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(baseImage,0,0);
 
-  // draw poster
-  ctx.drawImage(baseImage, 0, 0);
+  let x = document.getElementById("x").value;
+  let y = document.getElementById("y").value;
+  let size = document.getElementById("size").value;
 
-  // ===== EXACT PHOTO ALIGNMENT =====
   if(userImage){
     ctx.save();
     ctx.beginPath();
-
-    ctx.arc(295, 700, 155, 0, Math.PI * 2); // PERFECT circle
-
-    ctx.closePath();
+    ctx.arc(x, y, size, 0, Math.PI*2);
     ctx.clip();
-
-    ctx.drawImage(userImage, 140, 545, 310, 310); // PERFECT fit
-
+    ctx.drawImage(userImage, x-size, y-size, size*2, size*2);
     ctx.restore();
   }
 
-  // ===== EXACT NAME ALIGNMENT =====
   let name = document.getElementById("nameInput").value;
 
-  ctx.font = "bold 44px Arial";
+  ctx.font = "bold 40px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
 
-  ctx.fillText(name.toUpperCase(), 540, 1000); // PERFECT orange box
+  ctx.fillText(name.toUpperCase(), 540, 1000);
 }
 
-document.getElementById("nameInput").addEventListener("input", drawPoster);
+// 🔥 THIS LINE IS IMPORTANT (auto update sliders)
+document.querySelectorAll("input").forEach(el=>{
+  el.addEventListener("input", drawPoster);
+});
 
 function downloadPoster(){
   let link = document.createElement("a");
