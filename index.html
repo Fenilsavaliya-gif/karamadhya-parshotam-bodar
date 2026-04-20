@@ -72,11 +72,8 @@ baseImage.src = "poster.jpg";
 let userImage = null;
 
 baseImage.onload = function(){
-
-  // set canvas to original image size
   canvas.width = baseImage.width;
   canvas.height = baseImage.height;
-
   drawPoster();
 }
 
@@ -89,26 +86,28 @@ function loadImage(event){
 function drawPoster(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // draw original poster
+  // draw base poster
   ctx.drawImage(baseImage, 0, 0);
 
-  // draw user image (adjusted for 1080x1350)
+  // draw user image (PERFECT CIRCLE POSITION)
   if(userImage){
     ctx.save();
     ctx.beginPath();
-    ctx.arc(370, 700, 130, 0, Math.PI * 2); // circle center
+    ctx.arc(320, 760, 150, 0, Math.PI * 2);
     ctx.closePath();
     ctx.clip();
-    ctx.drawImage(userImage, 240, 570, 260, 260); // image position
+    ctx.drawImage(userImage, 170, 610, 300, 300);
     ctx.restore();
   }
 
-  // draw name
+  // draw name inside orange box
   let name = document.getElementById("nameInput").value;
-  ctx.font = "bold 40px Arial";
+
+  ctx.font = "bold 42px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
-  ctx.fillText(name, 540, 900); // center of orange box
+
+  ctx.fillText(name.toUpperCase(), 540, 1030);
 }
 
 document.getElementById("nameInput").addEventListener("input", drawPoster);
