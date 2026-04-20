@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Make Your Poster</title>
+<title>Make Your Poster</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      background: #f5e6d3;
-    }
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #f5e6d3;
+}
 
-    .container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 
-    canvas {
-      border-radius: 10px;
-      max-width: 100%;
-    }
+canvas {
+  border-radius: 10px;
+  max-width: 100%;
+}
 
-    .controls {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-    }
+.controls {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
 
-    button {
-      margin-top: 10px;
-      padding: 10px;
-      background: orange;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+button {
+  margin-top: 10px;
+  padding: 10px;
+  background: orange;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
@@ -45,18 +45,18 @@
 
 <div class="container">
 
-  <canvas id="canvas"></canvas>
+<canvas id="canvas"></canvas>
 
-  <div class="controls">
-    <p>Upload Photo</p>
-    <input type="file" accept="image/*" onchange="loadImage(event)">
+<div class="controls">
+  <p>Upload Photo</p>
+  <input type="file" accept="image/*" onchange="loadImage(event)">
 
-    <p>Your Name</p>
-    <input type="text" id="nameInput" placeholder="તમારું નામ લખો">
+  <p>Your Name</p>
+  <input type="text" id="nameInput" placeholder="તમારું નામ લખો">
 
-    <br>
-    <button onclick="downloadPoster()">Download</button>
-  </div>
+  <br>
+  <button onclick="downloadPoster()">Download</button>
+</div>
 
 </div>
 
@@ -85,40 +85,32 @@ function loadImage(event){
 function drawPoster(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // draw base poster
+  // draw poster
   ctx.drawImage(baseImage, 0, 0);
 
-  let w = canvas.width;
-  let h = canvas.height;
-
-  // ===== PHOTO (centered in circle) =====
+  // ===== EXACT PHOTO ALIGNMENT =====
   if(userImage){
-    let cx = w * 0.275;   // fine-tuned X
-    let cy = h * 0.545;   // fine-tuned Y
-    let r  = w * 0.135;   // radius
-
     ctx.save();
     ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+
+    ctx.arc(295, 700, 155, 0, Math.PI * 2); // PERFECT circle
+
     ctx.closePath();
     ctx.clip();
 
-    ctx.drawImage(userImage, cx - r, cy - r, r * 2, r * 2);
+    ctx.drawImage(userImage, 140, 545, 310, 310); // PERFECT fit
 
     ctx.restore();
   }
 
-  // ===== NAME (inside orange box) =====
+  // ===== EXACT NAME ALIGNMENT =====
   let name = document.getElementById("nameInput").value;
 
-  ctx.font = "bold " + (w * 0.038) + "px Arial";
+  ctx.font = "bold 44px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
 
-  let nameX = w * 0.50;
-  let nameY = h * 0.80;   // corrected position
-
-  ctx.fillText(name.toUpperCase(), nameX, nameY);
+  ctx.fillText(name.toUpperCase(), 540, 1000); // PERFECT orange box
 }
 
 document.getElementById("nameInput").addEventListener("input", drawPoster);
