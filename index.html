@@ -90,18 +90,19 @@ function drawPoster(){
   if(userImage){
     ctx.save();
     ctx.beginPath();
-    ctx.arc(200, 350, 70, 0, Math.PI * 2);
+    ctx.arc(205, 395, 75, 0, Math.PI * 2);
     ctx.closePath();
     ctx.clip();
-    ctx.drawImage(userImage, 130, 280, 140, 140);
+    ctx.drawImage(userImage, 130, 320, 150, 150);
     ctx.restore();
   }
 
   // draw name
   let name = document.getElementById("nameInput").value;
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "black";
-  ctx.fillText(name, 150, 470);
+ctx.font = "bold 22px Arial";
+ctx.fillStyle = "white";
+ctx.textAlign = "center";
+ctx.fillText(name, 300, 540);
 }
 
 document.getElementById("nameInput").addEventListener("input", drawPoster);
