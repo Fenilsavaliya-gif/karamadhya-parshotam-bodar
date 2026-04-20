@@ -19,6 +19,7 @@ body {
 
 canvas {
   border-radius: 10px;
+  max-width: 100%;
 }
 
 .controls {
@@ -45,7 +46,7 @@ button {
 
 <div class="container">
 
-<canvas id="canvas" width="600" height="800"></canvas>
+<canvas id="canvas"></canvas>
 
 <div class="controls">
   <p>Upload Photo</p>
@@ -71,6 +72,11 @@ baseImage.src = "poster.jpg";
 let userImage = null;
 
 baseImage.onload = function(){
+
+  // set canvas to original image size
+  canvas.width = baseImage.width;
+  canvas.height = baseImage.height;
+
   drawPoster();
 }
 
@@ -83,27 +89,26 @@ function loadImage(event){
 function drawPoster(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // draw base poster
-  ctx.drawImage(baseImage, 0, 0, 600, 800);
+  // draw original poster
+  ctx.drawImage(baseImage, 0, 0);
 
-  // draw user image inside circle
+  // draw user image (adjusted for 1080x1350)
   if(userImage){
     ctx.save();
     ctx.beginPath();
-    ctx.arc(205, 420, 75, 0, Math.PI * 2);
+    ctx.arc(370, 700, 130, 0, Math.PI * 2); // circle center
     ctx.closePath();
     ctx.clip();
-    ctx.drawImage(userImage, 130, 345, 150, 150);
+    ctx.drawImage(userImage, 240, 570, 260, 260); // image position
     ctx.restore();
   }
 
-  // draw name inside orange box
+  // draw name
   let name = document.getElementById("nameInput").value;
-  ctx.font = "bold 22px Arial";
+  ctx.font = "bold 40px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(name, 300, 565);
+  ctx.fillText(name, 540, 900); // center of orange box
 }
 
 document.getElementById("nameInput").addEventListener("input", drawPoster);
