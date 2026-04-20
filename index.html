@@ -52,7 +52,7 @@ button {
   <input type="file" accept="image/*" onchange="loadImage(event)">
 
   <p>Your Name</p>
-  <input type="text" id="nameInput" placeholder="Enter your name">
+  <input type="text" id="nameInput" placeholder="તમારું નામ લખો">
 
   <br>
   <button onclick="downloadPoster()">Download</button>
@@ -86,23 +86,24 @@ function drawPoster(){
   // draw base poster
   ctx.drawImage(baseImage, 0, 0, 600, 800);
 
-  // draw user image in circle
+  // draw user image inside circle
   if(userImage){
     ctx.save();
     ctx.beginPath();
-    ctx.arc(205, 395, 75, 0, Math.PI * 2);
+    ctx.arc(205, 420, 75, 0, Math.PI * 2);
     ctx.closePath();
     ctx.clip();
-    ctx.drawImage(userImage, 130, 320, 150, 150);
+    ctx.drawImage(userImage, 130, 345, 150, 150);
     ctx.restore();
   }
 
-  // draw name
+  // draw name inside orange box
   let name = document.getElementById("nameInput").value;
-ctx.font = "bold 22px Arial";
-ctx.fillStyle = "white";
-ctx.textAlign = "center";
-ctx.fillText(name, 300, 540);
+  ctx.font = "bold 22px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(name, 300, 565);
 }
 
 document.getElementById("nameInput").addEventListener("input", drawPoster);
