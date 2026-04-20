@@ -91,13 +91,14 @@ function drawPoster(){
 
   // draw user image (PERFECT CIRCLE POSITION)
   if(userImage){
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(320, 760, 150, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.clip();
-    ctx.drawImage(userImage, 170, 610, 300, 300);
-    ctx.restore();
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(300, 735, 145, 0, Math.PI * 2);   // moved left + up
+  ctx.closePath();
+  ctx.clip();
+  ctx.drawImage(userImage, 155, 590, 290, 290); // adjusted fit
+  ctx.restore();
+}
   }
 
   // draw name inside orange box
@@ -107,7 +108,7 @@ function drawPoster(){
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
 
-  ctx.fillText(name.toUpperCase(), 540, 1030);
+  ctx.fillText(name.toUpperCase(), 540, 1080);
 }
 
 document.getElementById("nameInput").addEventListener("input", drawPoster);
