@@ -24,13 +24,8 @@ canvas {
 
 .controls {
   background: white;
-  padding: 15px;
+  padding: 20px;
   border-radius: 10px;
-  width: 260px;
-}
-
-input[type="range"] {
-  width: 100%;
 }
 
 button {
@@ -61,17 +56,6 @@ button {
   <p><b>Your Name</b></p>
   <input type="text" id="nameInput" placeholder="તમારું નામ લખો" oninput="drawPoster()">
 
-  <hr>
-
-  <p>X: <span id="xVal">300</span></p>
-  <input type="range" id="x" min="0" max="1080" value="300" oninput="update()">
-
-  <p>Y: <span id="yVal">700</span></p>
-  <input type="range" id="y" min="0" max="1350" value="700" oninput="update()">
-
-  <p>Size: <span id="sizeVal">150</span></p>
-  <input type="range" id="size" min="50" max="300" value="150" oninput="update()">
-
   <button onclick="downloadPoster()">Download</button>
 
 </div>
@@ -100,21 +84,16 @@ function loadImage(e){
   userImage.onload = drawPoster;
 }
 
-function update(){
-  document.getElementById("xVal").innerText = document.getElementById("x").value;
-  document.getElementById("yVal").innerText = document.getElementById("y").value;
-  document.getElementById("sizeVal").innerText = document.getElementById("size").value;
-
-  drawPoster();
-}
-
 function drawPoster(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // draw base poster
   ctx.drawImage(baseImage,0,0);
 
-  let x = document.getElementById("x").value;
-  let y = document.getElementById("y").value;
-  let size = document.getElementById("size").value;
+  // ===== LOCKED PERFECT POSITION =====
+  let x = 266;
+  let y = 752;
+  let size = 161;
 
   if(userImage){
     ctx.save();
@@ -125,9 +104,10 @@ function drawPoster(){
     ctx.restore();
   }
 
+  // ===== NAME POSITION =====
   let name = document.getElementById("nameInput").value;
 
-  ctx.font = "bold 40px Arial";
+  ctx.font = "bold 42px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
 
